@@ -67,8 +67,53 @@
 
 \subsection{Scope}
 
-
 \section{Functional Requirements}
+
+The functional requirements of a system are derived the fundamental reason for the product's existence. They detail what the system must do, but not how it is to be achieved.
+
+\begin{enumerate}[{VP}1.]
+	\item User
+	\begin{enumerate}[{BE1}.1]
+		\item User wants to search for a term
+		\begin{enumerate}
+			\item The interface must provide an interactive input widget
+			\item The system should indicate the result of a search to the user
+			\item If more than one entry is found the system should allow the user to refine his/her search
+			\item The system must provide a means for navigating between entries
+			\item If the database contains the word:
+			\begin{enumerate}
+			 	\item The system must display the definition and other relevant information
+				\item The system must retrieve all occurrences of the word within the scope of the search
+			\end{enumerate}
+			\item If the word cannot be found in the database:
+			\begin{enumerate}
+				\item The system should display a number of closest lexical matches
+				\item If no similar entries are found the system should suggest searching a different term or broadening the 					scope of the search
+			\end{enumerate}
+		\end{enumerate}
+		\item User wants to search for a term within a category (optionally subject)
+		\begin{enumerate}
+			\item The system must provide the means to narrow the scope of a search to a subject
+			\item If no entries are found the system should prompt the user to broaden his/her search
+		\end{enumerate}
+	\end{enumerate}
+%	\item Developer
+%	\begin{enumerate}[{BE2}.1]
+%		\item Business Event
+%		\begin{enumerate}
+%			\item Requirement
+%			\item Requirement
+%			\item \dots
+%		\end{enumerate}
+%		\item Business Event
+%		\begin{enumerate}
+%			\item Requirement
+%			\item Requirement
+%			\item \dots
+%		\end{enumerate}
+%		\item \dots
+%	\end{enumerate}
+\end{enumerate}
 
 
 \section{Non-functional Requirements}
