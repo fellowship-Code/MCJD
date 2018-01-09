@@ -1,0 +1,29 @@
+To run this program, copy the 'data' folder from the main directory to the same folder as the exe. Unzip the zip archives that contain the database files to folders with the same name.
+
+The directory will then be
+
+MCJD.exe
+data/dict_en/*.db
+data/dict_fr/*.db
+data/index.db
+
+where *.db are the database files within the respective zip archives.
+
+To add to or replace the database files to expand the dictionary, follow the following guidelines.
+
+Keep within database file index.db:
+	TABLE Subject_EN(category TEXT, subject TEXT)
+	TABLE Subject_FR(category_en TEXT <optional>, category_fr TEXT, subject TEXT)
+
+Within dict_en and dict_fr:
+	Create database files corresponding to the category names contained in the Subject_EN and Subject_FR tables (remove spaces from the categories when creating filenames).
+	
+	Within the individual database files in dict_en:
+		Create a single table with table name corresponding to the filename
+		Table should have schema:
+			CREATE TABLE <Table Name>(SUBJECT_EN TEXT,TERM_EN TEXT,TERM_EN_PARAMETER TEXT,ABBREVIATION_EN TEXT,ABBREVIATION_EN_PARAMETER TEXT,SYNONYMS_EN TEXT,SYNONYMS_EN_PARAMETER TEXT,TEXTUAL_SUPPORT_1_EN TEXT,TEXTUAL_SUPPORT_2_EN TEXT,TEXTUAL_SUPPORT_3_EN TEXT)
+	
+	Within the individual database files in dict_fr:
+		Create a single table with table name corresponding to the filename
+		Table should have schema:
+			CREATE TABLE <Table Name>(DOMAINE_FR TEXT,TERME_FR TEXT,TERME_FR_PARAMETRE TEXT,ABBREVIATION_FR TEXT,ABBREVIATION_FR_PARAMETRE TEXT,SYNONYMES_FR TEXT,SYNONYMES_FR_PARAMETRE TEXT,JUSTIFICATION_1_FR TEXT,JUSTIFICATION_2_FR TEXT,JUSTIFICATION_3_FR TEXT)

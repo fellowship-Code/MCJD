@@ -6,3 +6,8 @@ The MCJD project takes the entirety of the Government of Canada's linguistic dat
 
 What are the uses of the MCJD project?
 The MCJD project is a pocket dictionary for your personal computer. Instead of containing common words that can be easily searched online, the MCJD database contains millions of industry jargon and standardized terminology.
+
+
+Please see Instructions.txt for installation information.
+
+The data provided under the 'data' folder contains information licensed under the [Open Government Licence – Canada](http://open.canada.ca/en/open-government-licence-canada).
