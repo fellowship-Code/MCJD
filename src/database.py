@@ -48,13 +48,13 @@ def english_search(category, subject, text):
 def french_search(category, subject, text):
     if category == "Toutes categoriés":
         if (subject == "" or subject == "*") and text != "*" and text != "":
-            search_fr(text)
+            return search_term_fr(text)
         elif text != "*" and text != "":
-            search_fr(subject, text)
+            return search_domaine_fr(subject, text)
     elif (subject == "" or subject == "*") and text != "*" and text != "":
-        search_fr(category, None, text)
+        return search_all_fr(category, None, text)
     elif text != "*" and text != "":
-        search_fr(category, subject, text)
+        return search_all_fr(category, subject, text)
 
 
 def search_term_en(text):    
@@ -115,11 +115,60 @@ def search_all(category, subject, text):
             return resultset
     return resultset
 
-def search_fr(text):
-    pass
+def search_term_fr(text):    
+    global categories_fr
+    
+    param = ('%' + text + '%',)
+    resultset = []
 
-def search_fr(subject, text):
-    pass
+    for category in categories_fr:
+        curr_category = category.replace(' ', '')
+        dbstring = 'data/dict_fr/' + curr_category + '.db'        
+        dbconn = sqlite3.connect(dbstring)
+        dbcursor = dbconn.cursor()
+        dbcursor.execute("select * from " + curr_category + " where TERME_FR like ?", param)
+        rows = dbcursor.fetchall()
+        dbconn.close()
+        
+        for i in range(len(rows)):
+            resultset.append((category,) + rows[i])
+        if len(resultset) > 15:
+            return resultset
+    return resultset
 
-def search_fr(category, subject, text):
-    pass
+def search_domaine_fr(subject, text):
+    global categories_fr
+    
+    param = ('%' + subject + '%', '%' + text + '%',)
+    resultset = []
+    for category in categories_fr:
+        curr_category = category.replace(' ', '')
+        dbstring = 'data/dict_fr/' + curr_category + '.db'
+        dbconn = sqlite3.connect(dbstring)
+        dbcursor = dbconn.cursor()
+        rows = dbcursor.execute("select * from " + curr_category + " where domaine_fr like ? and terme_fr like ?", param).fetchall()
+        dbconn.close()
+        for i in range(len(rows)):
+            resultset.append((category,) + rows[i])
+        if len(resultset) > 15:
+            return resultset
+    return resultset
+
+def search_all_fr(category, subject, text):
+    global categories_fr
+    
+    if subject == '' or subject == '*' or subject is None:
+        subject = ''
+    
+    param = ('%' + subject + '%', '%' + text + '%')
+    resultset = []    
+    dbstring = 'data/dict_fr/' + category.replace(' ', '') + '.db'
+    dbconn = sqlite3.connect(dbstring)
+    dbcursor = dbconn.cursor()        
+    rows = dbcursor.execute("select * from " + category.replace(' ', '') + " where domaine_fr like ? and TERME_FR like ?", param).fetchall()
+    dbconn.close()
+    for i in range(len(rows)):
+        resultset.append((category,) + rows[i])
+        if len(resultset) > 15:
+            return resultset
+    return resultset

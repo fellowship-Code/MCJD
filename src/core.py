@@ -88,11 +88,18 @@ class UI(QMainWindow):
             self.ui.btn_category.setText("Category")
             self.ui.btn_subject.setText("Subject")
             self.ui.btn_term.setText("Term")
+            self.ui.btn_search.setText("Search")
+            self.ui.btn_next.setText("Next")
+            self.ui.btn_prev.setText("Previous")
+            
         else:
             self.populate_fr()
             self.ui.btn_category.setText("Categorié")
             self.ui.btn_subject.setText("Sujet")
             self.ui.btn_term.setText("Term")
+            self.ui.btn_search.setText("Recherche")
+            self.ui.btn_next.setText("Prochain")
+            self.ui.btn_prev.setText("Précédente")
 
     ###################     Update   ###################
 
@@ -119,9 +126,16 @@ class UI(QMainWindow):
     def update_content(self):
         
         if self.result == [] or len(self.result) == 0 or self.result == None:
-            self.ui.content.setHtml("<b>No results. Please search for a new term or increase the scope of your search<b>")
+            if self.ui.preflang.currentText() == "EN":
+                self.ui.content.setHtml("<b>No results. Please search for a new term or increase the scope of your search<b>")
+            else:
+                self.ui.content.setHtml("<b>Aucun résultat.<br>Veuillez rechercher un nouveau terme ou augmenter la portée de votre recherche<b>")
             return
         
+        synonyms = "None"
+        if self.result[self.index][6] != None:
+            synonyms = self.result[self.index][6].replace(';', '<br>')
+                
         self.ui.summary.setHtml('''
 <dl>
     <dt><b>Category:<b></dt>
@@ -135,7 +149,7 @@ class UI(QMainWindow):
     <dt><b>Synonyms:<b></dt>
     <dd>{4}</dd>
 </dl>
-        '''.format(self.result[self.index][0], self.result[self.index][1], self.result[self.index][2], self.result[self.index][4],self.result[self.index][6].replace(';', '<br>')))
+        '''.format(self.result[self.index][0], self.result[self.index][1], self.result[self.index][2], self.result[self.index][4],synonyms))
         
         content_string = '''
 <dl>
@@ -146,11 +160,16 @@ class UI(QMainWindow):
                 continue
             content_string += "<dt><b>" + text.split(": ",1)[0] + "<b></dt>"
             content_string += "<dd>" + text.split(": ",1)[1] + "<dd>"
+        if content_string.count("<dt>") == 0:
+            if self.ui.preflang.currentText() == "EN":
+                content_string += "<dt><b>Textual support not available. Please continue to next result<b></dt>"
+            else:
+                content_string += "<dt><b>Le support textuel n'est pas disponible. S'il vous plaît continuer à résultat suivant<b></dt>"
         content_string += "</dl>"
         self.ui.content.setHtml(content_string)
 
 
-    def next_page(self):
+    def next_page(self):        
         if self.index < len(self.result) - 1:
             self.index += 1
             self.update_content()
